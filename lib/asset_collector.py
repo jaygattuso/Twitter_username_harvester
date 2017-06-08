@@ -19,7 +19,6 @@ def get_media(base_out_folder):
 				print "{}: {}".format(name, url)
 				get_file(url, file_path)
 
-
 def main():
 	pass
 
