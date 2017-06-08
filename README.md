@@ -5,7 +5,7 @@ Also, no warrenties - things might break, I've not done much bug squshing...
 
 __________ prerequisites ______________
 
-You need to have set up twarc with twitter API keys/secrets etc
+You need to have set up twarc with twitter API keys/secrets etc.
 
 https://github.com/DocNow/twarc\
 https://dev.twitter.com/oauth/overview/application-owner-access-tokens
@@ -20,26 +20,13 @@ Before you run the script, there are three things to possibly change.
 It will (should) work out-of-the-box, just with the default values 
 (assuming there is a valid names file for it to work from - more on this below). 
  
+In the block labelled ######### in/out vars setting ############### 
+there is a couple of things to change. 
 
-1) on line 43: test = True
+base_out_folder is the location your crawled assets will be stored. 
+It doesn't need to exist. It can be relative to the deployment folder or an absolute location.  
 
-I set it up to allow rapid switching between test and "prod" instances. 
-There is no difference between the two, it just means you can keep two sets of input 
-lists easily accessible, and two different output folders. 
-
-Set to True or False depending on what you want to do. 
-(Main usecase is for running debugging testing while a crawl is in flight - 
-as a crawl might be many weeks its important to not lose track... )
-
-Associated to this var, set base_out_folder on lines 45 and 49 as 
-two locations you want to use. 
-They are set to "stream_grabs_testing" and "stream_grabs", 
-which will appear in the folder you run the script from at run time. 
-
-You also need to set the names_file on line 46 and 50. 
-
-The names file is just a [new line delimited] list. 
-There are two versions that the script can cope with. 
+names_file is the seed list. I have included a basic example. 
 
 The simplest is a basic list of usernames you want to crawl. 
 
