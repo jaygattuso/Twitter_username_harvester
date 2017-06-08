@@ -267,67 +267,69 @@ after the while loop to give a back off. 600 == 600 seconds == 10 mins.
  """ 
 while  start_date < datetime.now(timezone) < end_date:
 	# time.sleep(600) 
-	crawl_time = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
-	for i, name in enumerate(names):
-		### support for a names list that has no "since" column. 
-		try:
-			name, since_id = name.split(",")
-		except:
-			since_id = False
+	# crawl_time = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+	# for i, name in enumerate(names):
+	# 	### support for a names list that has no "since" column. 
+	# 	try:
+	# 		name, since_id = name.split(",")
+	# 	except:
+	# 		since_id = False
 
-		### names list is sometimes given as full tweeter IDs
-		name = name.strip().replace("https://twitter.com/", "").replace("?", "")
-		### or with a trailing backslash
-		if name.endswith('/'):
-			name = name[:-1]
-		### or a leading @ symbol
-		if name.startswith("@"):
-			name = name[1:]
-		### stands up the tweeter storage parts
-		hashtags_log_path, urls_log_path, media_log_path, seen_tweets_path, json_folder, assets_folder = make_tweeter_folders(name)
-		print "{} of {}: {}".format(i+1, len(names), name)
-		tweets = []
+	# 	### names list is sometimes given as full tweeter IDs
+	# 	name = name.strip().replace("https://twitter.com/", "").replace("?", "")
+	# 	### or with a trailing backslash
+	# 	if name.endswith('/'):
+	# 		name = name[:-1]
+	# 	### or a leading @ symbol
+	# 	if name.startswith("@"):
+	# 		name = name[1:]
+	# 	### stands up the tweeter storage parts
+	# 	hashtags_log_path, urls_log_path, media_log_path, seen_tweets_path, json_folder, assets_folder = make_tweeter_folders(name)
+	# 	print "{} of {}: {}".format(i+1, len(names), name)
+	# 	tweets = []
 		
-		### handles the two differnt input lists. 
-		if since_id != "False":
-			try:
-				timeline_tweets = t.timeline(screen_name=name, since_id=since_id)
-			except:
-				print "Failed to get timeline, skipping"
-				continue
-		else:
-			try:
-				timeline_tweets = t.timeline(screen_name=name)
-			except:
-				print "Failed to get timeline, skipping"
-				continue
+	# 	### handles the two differnt input lists. 
+	# 	if since_id != "False":
+	# 		try:
+	# 			timeline_tweets = t.timeline(screen_name=name, since_id=since_id)
+	# 		except:
+	# 			print "Failed to get timeline, skipping"
+	# 			continue
+	# 	else:
+	# 		try:
+	# 			timeline_tweets = t.timeline(screen_name=name)
+	# 		except:
+	# 			print "Failed to get timeline, skipping"
+	# 			continue
 
-		### per tweet set processing 
-		for tweet in timeline_tweets:
-			tweet_id = tweet["id_str"]
-			tweet_date = tweet_date_to_datetime(tweet["created_at"])
+	# 	### per tweet set processing 
+	# 	for tweet in timeline_tweets:
+	# 		tweet_id = tweet["id_str"]
+	# 		tweet_date = tweet_date_to_datetime(tweet["created_at"])
 
-			############# per tweet processing ############
-			extract_hashtags(tweet)
-			extract_urls(tweet)
-			extract_media(tweet)
-			tweets.append(tweet)
-			line = "{}|{}|{}|{}\n".format(name, tweet_date, tweet_id, crawl_time)
-			append_line_to_log(seen_tweets_path, line)
-			append_line_to_log(master_seen_tweets_path, line)
-			###############################################
+	# 		############# per tweet processing ############
+	# 		extract_hashtags(tweet)
+	# 		extract_urls(tweet)
+	# 		extract_media(tweet)
+	# 		tweets.append(tweet)
+	# 		line = "{}|{}|{}|{}\n".format(name, tweet_date, tweet_id, crawl_time)
+	# 		append_line_to_log(seen_tweets_path, line)
+	# 		append_line_to_log(master_seen_tweets_path, line)
+	# 		###############################################
 
-		############# write out tweeter json file ############################################################
-		file_path = '{}_{}.json'.format(os.path.join(json_folder, (time.strftime("%d-%m-%Y_%H-%M-%S"))), name) 
-		with open(file_path, "w") as outfile:
-			json.dump(tweets, outfile)
-		######################################################################################################
+	# 	############# write out tweeter json file ############################################################
+	# 	file_path = '{}_{}.json'.format(os.path.join(json_folder, (time.strftime("%d-%m-%Y_%H-%M-%S"))), name) 
+	# 	with open(file_path, "w") as outfile:
+	# 		json.dump(tweets, outfile)
+	# 	######################################################################################################
 
 	########### post havest tick events ###############
-	asset_collector.get_media()
-	hashtags_all_time = hashtag_sorter.get_sorted_hastag_counts(days_delta=0)
-	hashtags_day = hashtag_sorter.get_sorted_hastag_counts(days_delta=1)
-	hashtags_week = hashtag_sorter.get_sorted_hastag_counts(days_delta=7)
+	asset_collector.get_media(base_out_folder)
+	print "grinding hashtags"
+	# hashtags_all_time = hashtag_sorter.get_sorted_hashtag_counts(base_out_folder, days_delta=0)
+	# hashtags_day = hashtag_sorter.get_sorted_hashtag_counts(base_out_folder, days_delta=1)
+	# hashtags_week = hashtag_sorter.get_sorted_hashtag_counts(base_out_folder, days_delta=7)
+	print "finished with hashtags"
 	make_html_page()
 	###################################################
 
