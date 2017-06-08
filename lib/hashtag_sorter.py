@@ -3,7 +3,6 @@ import operator
 from dateutil import parser
 from datetime import datetime, timedelta
 
-
 def get_sorted_hashtag_counts(base_out_folder, days_delta=0):
 	""" Takes a log of all hashtags, and makes freq graph sorted by most common
 	timedelta is used to make different time window views of hashtags
