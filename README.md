@@ -5,7 +5,7 @@ Also, no warrenties - things might break, I've not done much bug squshing...
 
 __________ prerequisites ______________
 
-You need to have set up twarc with twitter API keys/secrets et
+You need to have set up twarc with twitter API keys/secrets etc.
 
 https://github.com/DocNow/twarc\
 https://dev.twitter.com/oauth/overview/application-owner-access-tokens
